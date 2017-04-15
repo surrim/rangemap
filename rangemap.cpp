@@ -1,15 +1,19 @@
 #include "rangemap.h"
 
+#include <cassert>
+
 static_assert(sizeof(0ul) == sizeof(size_t));
 
 RangeMap::RangeMap(size_t size, unsigned defaultWidth):
 		values(size) {
+    assert(defaultWidth > 0);
 	for (auto i = 0ul; i < values.size(); i++) {
 		increment(i, defaultWidth);
 	}
 }
 
 size_t RangeMap::push(unsigned width) {
+    assert(width > 0);
     auto id = values.size();
     for (auto bit = 1ul; id & bit; bit <<= 1) {
         width += values[id ^ bit];
@@ -19,6 +23,7 @@ size_t RangeMap::push(unsigned width) {
 }
 
 void RangeMap::increment(size_t id, unsigned width) {
+    assert(width > 0);
     for (auto bit = 1ul; id < values.size(); id ^= bit) {
         values[id] += width;
         while (id & bit) {
@@ -39,12 +44,8 @@ unsigned RangeMap::width(size_t id) const {
     return width;
 }
 
-unsigned RangeMap::sum() const {
-    return left(values.size());
-}
-
-unsigned RangeMap::left(size_t id) const {
-    auto left = 0u;
+static unsigned left(const std::vector<unsigned>& values, size_t id) {
+	auto left = 0u;
     for (auto bit = 1u; id; bit <<= 1) {
         if (id & bit) {
             id ^= bit;
@@ -52,6 +53,15 @@ unsigned RangeMap::left(size_t id) const {
         }
     }
     return left;
+}
+
+unsigned RangeMap::sum() const {
+    return ::left(values, values.size());
+}
+
+unsigned RangeMap::left(size_t id) const {
+	assert(id < size());
+	return ::left(values, id);
 }
 
 static size_t msb(size_t value) {
@@ -63,6 +73,7 @@ static size_t msb(size_t value) {
 }
 
 size_t RangeMap::find(unsigned offset, unsigned& left) const {
+    assert(offset < sum());
     auto foundId = 0ul;
     auto foundLeft = 0u;
     for (auto height = msb(values.size()); height > 1; height >>= 1) {
