@@ -25,6 +25,8 @@ class RangeMap {
 	std::vector<unsigned> values;
 public:
 	RangeMap(size_t size = 0, unsigned defaultWidth = 1);
+	RangeMap(const std::vector<unsigned>& widths);
+	RangeMap(const std::initializer_list<unsigned>& widths);
 
 	size_t push(unsigned width = 1);
 	void increment(size_t id, unsigned width = 1);
