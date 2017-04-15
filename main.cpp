@@ -15,5 +15,5 @@ int main(int argc, char *argv[]) {
 			std::cout << i << '\t' << id << '\t' << left << std::endl;
 		}
 	}
-    return 0;
+	return 0;
 }
