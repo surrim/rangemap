@@ -1,5 +1,6 @@
 #include "rangemap.h"
 
+#include <algorithm>
 #include <cassert>
 
 static_assert(sizeof(0ul) == sizeof(size_t));
@@ -7,8 +8,19 @@ static_assert(sizeof(0ul) == sizeof(size_t));
 RangeMap::RangeMap(size_t size, unsigned defaultWidth):
 		values(size) {
 	assert(defaultWidth > 0);
-	for (auto i = 0ul; i < values.size(); i++) {
-		increment(i, defaultWidth);
+	if (size) {
+		values[0] = defaultWidth;
+		auto frameSize = 1ul;
+		while (true) {
+			auto doubleFrameSize = 2 * frameSize;
+			if (doubleFrameSize > size) {
+				std::copy_n(values.begin(), size - frameSize, values.begin() + frameSize);
+				break;
+			}
+			std::copy_n(values.begin(), frameSize, values.begin() + frameSize);
+			values[doubleFrameSize - 1] *= 2;
+			frameSize = doubleFrameSize;
+		}
 	}
 }
 
