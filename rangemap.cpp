@@ -70,6 +70,10 @@ size_t RangeMap::size() const {
 	return values.size();
 }
 
+bool RangeMap::empty() const {
+	return values.empty();
+}
+
 unsigned RangeMap::width(size_t id) const {
 	auto width = values[id];
 	for (auto bit = 1ul; id & bit; bit <<= 1) {

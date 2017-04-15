@@ -31,6 +31,7 @@ public:
 	void pop();
 
 	size_t size() const;
+	bool empty() const;
 	unsigned width(size_t id) const;
 	unsigned sum() const;
 	unsigned left(size_t id) const;
