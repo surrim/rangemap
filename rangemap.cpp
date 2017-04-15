@@ -25,8 +25,8 @@ static_assert(sizeof(0ul) == sizeof(size_t));
 
 RangeMap::RangeMap(size_t size, unsigned defaultWidth):
 		values(size) {
-	assert(defaultWidth > 0);
 	if (size) {
+		assert(defaultWidth > 0);
 		values[0] = defaultWidth;
 		auto frameSize = 1ul;
 		while (true) {
