@@ -29,6 +29,7 @@ public:
 	size_t push(unsigned width = 1);
 	void increment(size_t id, unsigned width = 1);
 	void pop();
+	void clear();
 
 	size_t size() const;
 	bool empty() const;

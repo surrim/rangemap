@@ -66,6 +66,10 @@ void RangeMap::pop() {
 	values.pop_back();
 }
 
+void RangeMap::clear() {
+	values.clear();
+}
+
 size_t RangeMap::size() const {
 	return values.size();
 }
