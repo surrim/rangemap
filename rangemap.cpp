@@ -51,7 +51,11 @@ RangeMap::RangeMap(const std::vector<unsigned>& widths):
 }
 
 RangeMap::RangeMap(const std::initializer_list<unsigned>& widths):
-		RangeMap(std::vector<unsigned>(widths)) {
+		values() {
+	values.reserve(widths.size());
+	for (auto width: widths) {
+		push(width);
+	}
 }
 
 size_t RangeMap::push(unsigned width) {
