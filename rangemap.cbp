@@ -24,6 +24,7 @@
 				<Option parameters="2 20 38 40 19 2 3 1" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-DNDEBUG" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
