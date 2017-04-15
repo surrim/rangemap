@@ -62,6 +62,10 @@ void RangeMap::increment(size_t id, unsigned width) {
 	}
 }
 
+void RangeMap::pop() {
+	values.pop_back();
+}
+
 size_t RangeMap::size() const {
 	return values.size();
 }
