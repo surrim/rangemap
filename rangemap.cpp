@@ -21,14 +21,12 @@
 #include <algorithm>
 #include <cassert>
 
-static_assert(sizeof(0ul) == sizeof(size_t));
-
 RangeMap::RangeMap(size_t size, unsigned defaultWidth):
 		values(size) {
 	if (size) {
 		assert(defaultWidth > 0);
 		values[0] = defaultWidth;
-		auto frameSize = 1ul;
+		auto frameSize = size_t(1);
 		while (true) {
 			auto doubleFrameSize = 2 * frameSize;
 			if (doubleFrameSize > size) {
@@ -61,7 +59,7 @@ RangeMap::RangeMap(const std::initializer_list<unsigned>& widths):
 size_t RangeMap::push(unsigned width) {
 	assert(width > 0);
 	auto id = values.size();
-	for (auto bit = 1ul; id & bit; bit <<= 1) {
+	for (auto bit = size_t(1); id & bit; bit <<= 1) {
 		width += values[id ^ bit];
 	}
 	values.push_back(width);
@@ -70,7 +68,7 @@ size_t RangeMap::push(unsigned width) {
 
 void RangeMap::increment(size_t id, unsigned width) {
 	assert(width > 0);
-	for (auto bit = 1ul; id < values.size(); id ^= bit) {
+	for (auto bit = size_t(1); id < values.size(); id ^= bit) {
 		values[id] += width;
 		while (id & bit) {
 			bit <<= 1;
@@ -96,7 +94,7 @@ bool RangeMap::empty() const {
 
 unsigned RangeMap::width(size_t id) const {
 	auto width = values[id];
-	for (auto bit = 1ul; id & bit; bit <<= 1) {
+	for (auto bit = size_t(1); id & bit; bit <<= 1) {
 		width -= values[id ^ bit];
 	}
 	return width;
@@ -123,7 +121,7 @@ unsigned RangeMap::left(size_t id) const {
 }
 
 static size_t msb(size_t value) {
-	auto bit = 1ul;
+	auto bit = size_t(1);
 	while (bit < value) {
 		bit <<= 1;
 	}
@@ -132,7 +130,7 @@ static size_t msb(size_t value) {
 
 size_t RangeMap::find(unsigned offset, unsigned& left) const {
 	assert(offset < sum());
-	auto foundId = 0ul;
+	auto foundId = size_t(0);
 	auto foundLeft = 0u;
 	for (auto height = msb(values.size()); height > 1; height >>= 1) {
 		auto middleId = foundId + (height >> 1);
